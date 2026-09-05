@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from sqlalchemy.orm import Session
 
 from app.schemas.recommendation import (
@@ -75,10 +78,11 @@ def recommend_standards_semantic(request: RecommendationRequest, db: Session) ->
     return RecommendationResponse(query=request.specification, recommendations=recommendations)
 
 
+
 def recommend_standards(request: RecommendationRequest, db: Session | None = None) -> RecommendationResponse:
     if db is not None:
         try:
             return recommend_standards_semantic(request, db)
         except Exception:
-            pass
+            logger.exception("Semantic search failed, falling back to rule-based matching.")
     return recommend_standards_rulebased(request)
