@@ -36,7 +36,7 @@ export default function ComplianceBanner({
     <div
       className="flex items-center gap-3 px-4 py-3 rounded-xl border"
       style={{ background: cfg.bg, borderColor: cfg.border }}
-    >
+    >    
       <TrafficLight status={status} />
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline gap-2">
