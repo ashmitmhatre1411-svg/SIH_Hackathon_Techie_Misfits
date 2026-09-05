@@ -1,17 +1,240 @@
-# Backend API Module (FastAPI)
+# Backend
 
-This directory contains the core API server that handles frontend requests, validates data, and communicates with the database and AI services.
+## Purpose
 
-## Core Files (`app/core/` & `app/`)
-* `main.py`: The entry point of the FastAPI application. It initializes the server and registers the API routers.
-* `core/config.py`: Manages environment variables and application configurations (e.g., database URIs, API keys).
+The `backend` folder contains the FastAPI application responsible for connecting the frontend, AI services, document processing, and database.
 
-## API Routes (`app/api/routes/`)
-* `health.py`: A simple `GET /api/health/` endpoint to verify the server is running.
-* `recommendation.py`: The main `POST /api/recommend/` endpoint that receives user queries, calls the recommendation service, and returns structured data.
+---
 
-## Schemas (`app/schemas/`)
-* `recommendation.py`: Contains Pydantic models (`RecommendationRequest`, `RecommendationResponse`) to strictly validate incoming user queries and format outgoing JSON responses.
+## Responsibilities
 
-## Business Logic (`app/services/`)
-* `recommendation_service.py`: Currently contains placeholder/mock logic for string matching. Ultimately, this service will execute the ReAct agent, query the vector database, enforce the QCO gate, and return the synthesized LLM clause.
+The backend handles:
+
+* API requests
+* Input validation
+* File uploads
+* Document extraction
+* Recommendation orchestration
+* AI service integration
+* Database integration
+* JSON response generation
+
+---
+
+## Architecture
+
+```text
+Frontend
+   |
+   | HTTP
+   v
+FastAPI
+   |
+   +----------------+
+   |                |
+   v                v
+Document        Recommendation
+Service          Service
+   |                |
+   v                v
+PDF/DOCX        AI + Database
+Extraction
+   |                |
+   +-------+--------+
+           |
+           v
+       API Response
+```
+
+---
+
+## Folder Structure
+
+```text
+backend/
+│
+├── README.md
+│
+└── app/
+    ├── main.py
+    │
+    ├── api/
+    │   └── routes/
+    │       └── recommendation.py
+    │
+    ├── schemas/
+    │   └── recommendation.py
+    │
+    └── services/
+        ├── document_service.py
+        └── recommendation_service.py
+```
+
+---
+
+## `app/main.py`
+
+Main FastAPI application.
+
+Responsibilities:
+
+* Create FastAPI application
+* Register API routes
+* Configure CORS
+* Provide health endpoint
+* Start application
+
+---
+
+## `api/routes/`
+
+Contains API endpoints.
+
+### Recommendation Endpoint
+
+```text
+POST /api/recommend/analyze
+```
+
+The endpoint accepts:
+
+```text
+specification
+domain
+file
+```
+
+---
+
+## `schemas/`
+
+Contains Pydantic request/response models.
+
+Schemas provide:
+
+* Input validation
+* Type safety
+* Consistent API responses
+* Documentation in Swagger
+
+---
+
+## `services/`
+
+Contains business logic.
+
+### `document_service.py`
+
+Responsible for extracting text from:
+
+```text
+PDF
+DOCX
+TXT
+MD
+CSV
+```
+
+The extracted text is passed to the recommendation service.
+
+---
+
+### `recommendation_service.py`
+
+The main recommendation orchestration layer.
+
+It combines:
+
+```text
+User Input
+    ↓
+Semantic Retrieval
+    ↓
+Database Metadata
+    ↓
+Allied Standards
+    ↓
+Certification
+    ↓
+Final Recommendation
+```
+
+---
+
+## Example API Request
+
+```text
+Product:
+"1100V PVC insulated copper cable suitable for building wiring"
+```
+
+The backend may return:
+
+```json
+{
+  "primary_standard": {
+    "is_number": "IS 694:2010"
+  },
+  "allied_standards": [],
+  "certification": {},
+  "confidence": 0.91
+}
+```
+
+---
+
+## Error Handling
+
+The backend should gracefully handle:
+
+* Missing specification
+* Invalid file
+* Unsupported file type
+* Empty document
+* AI service failure
+* Database failure
+* Low-confidence recommendation
+
+The system should return meaningful HTTP errors instead of crashing.
+
+---
+
+## Security Considerations
+
+Future production deployment should include:
+
+* File-size limits
+* File-type validation
+* Malware scanning
+* Authentication
+* Rate limiting
+* Input sanitization
+* Audit logging
+
+---
+
+## Running
+
+From the project root:
+
+```bash
+pip install -r Requirements.txt
+```
+
+Then:
+
+```bash
+uvicorn backend.app.main:app --reload
+```
+
+API:
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger:
+
+```text
+http://127.0.0.1:8000/docs
+```
