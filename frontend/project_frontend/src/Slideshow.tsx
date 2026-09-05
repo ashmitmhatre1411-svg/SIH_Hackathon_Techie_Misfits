@@ -2,11 +2,11 @@ import { useState, useEffect } from "react"
 
 //slideshow images array
 const SLIDESHOW_IMAGES = [
-  "https://images.unsplash.com/photo-1523292562811-8fa7962a78c8?w=1920&h=1080&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1573181759662-1c146525b21f?w=1920&h=1080&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1616873354936-b9e21b744c54?w=1920&h=1080&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1627397159237-d2acb7f500af?w=1920&h=1080&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1667849921481-9e13c239ee3d?w=1920&h=1080&fit=crop&auto=format",
+  "frontend/project_frontend/images/img1.jpeg?w=1920&h=1080&fit=crop&auto=format",
+  "frontend/project_frontend/images/img2.jpeg?w=1920&h=1080&fit=crop&auto=format",
+  "frontend/project_frontend/images/img3.jpeg?w=1920&h=1080&fit=crop&auto=format",
+  "frontend/project_frontend/images/img4.jpeg?w=1920&h=1080&fit=crop&auto=format",
+  "frontend/project_frontend/images/img5.jpeg?w=1920&h=1080&fit=crop&auto=format",
 ]
 
 //function for slideshow
