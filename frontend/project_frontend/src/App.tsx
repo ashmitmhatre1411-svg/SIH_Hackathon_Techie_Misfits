@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import SlideshowBackground from "./Slideshow"
 import TopNavbar from "./TopNavbar"
-import { ApiResponse, TierCard,TieredStandardsBreakdown } from "./TieredStandardsCards"
+import { ApiResponse } from "./TieredStandardsCards"
 import { ComplianceStatus } from "./ComplianceStatus"
 import RightPanel from "./RightPanel"
-import { UserMessage,ThinkingDots,AIMessage,ResponseSummaryCard,ValidationError,ChatInputArea } from "./ChatComponents"
+import { UserMessage,AIMessage,ResponseSummaryCard,ChatInputArea } from "./ChatComponents"
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Message = {
