@@ -1,6 +1,6 @@
-export type ComplianceStatus = "compliant" | "partial" | "non-compliant"
+import {ComplianceStatus} from "./ComplianceStatus"
 
-export function TrafficLight({ status }: { status: ComplianceStatus }) {
+export default function TrafficLight({ status }: { status: ComplianceStatus }) {
   const lights = [
     {
       id: "non-compliant",
