@@ -1,13 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import SlideshowBackground from "./Slideshow"
 import TopNavbar from "./TopNavbar"
-import TrafficLight  from "./TrafficLight"
-import QCOMandatoryBadge from "./QCOMandatoryBadge"
 import { ApiResponse, TierCard,TieredStandardsBreakdown } from "./TieredStandardsCards"
-import useCopyText from "./CopyText"
-import ClauseOutputBox from "./ClauseOutputBox"
 import { ComplianceStatus } from "./ComplianceStatus"
-import ComplianceBanner from "./ComplianceBanner"
 import RightPanel from "./RightPanel"
 import { UserMessage,ThinkingDots,AIMessage,ResponseSummaryCard,ValidationError,ChatInputArea } from "./ChatComponents"
 // ─── Types ────────────────────────────────────────────────────────────────────
