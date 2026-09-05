@@ -3,34 +3,52 @@ from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
+
 class IndianStandard(Base):
     __tablename__ = "indian_standards"
 
     id = Column(Integer, primary_key=True, index=True)
-    is_code = Column(String, unique=True, index=True, nullable=False) # e.g., "IS 4985:2021"
-    title = Column(String, nullable=False) # e.g., "Unplasticized PVC Pipes"
-    department = Column(String, index=True) # e.g., "Plumbing", "Electrical"
-    
-    # Tier 1 Gate: If True, the agent MUST flag this in the final output
-    is_qco_mandatory = Column(Boolean, default=False) 
-    
-    # Text description used later for your ChromaDB vector embeddings
+    is_code = Column(String(120), unique=True, index=True, nullable=False)
+    title = Column(String(500), nullable=False)
+    department = Column(String(120), index=True, nullable=False)
     description = Column(Text, nullable=True)
 
-    # Relationships for Tier 3 Normative Standards
+    # Version / currency metadata. These are data fields, not AI-generated claims.
+    current_version = Column(String(120), nullable=True)
+    revision = Column(String(120), nullable=True)
+    amendments_json = Column(Text, default="[]")
+    reviewed_year = Column(Integer, nullable=True)
+    reaffirmation_year = Column(Integer, nullable=True)
+    certification_type = Column(String(120), nullable=True)
+    certification_mandatory = Column(Boolean, default=False)
+    certification_details = Column(Text, nullable=True)
+    qco_order = Column(String(500), nullable=True)
+    source_url = Column(String(1000), nullable=True)
+    verified_on = Column(String(30), nullable=True)
+
     normative_standards = relationship(
         "StandardDependency",
         foreign_keys="[StandardDependency.primary_code_id]",
-        back_populates="primary_standard"
+        back_populates="primary_standard",
+        cascade="all, delete-orphan",
     )
 
+
 class StandardDependency(Base):
-    """Mapping table to link Tier 2 Primary codes to Tier 3 Normative testing codes."""
     __tablename__ = "standard_dependencies"
 
     id = Column(Integer, primary_key=True, index=True)
-    primary_code_id = Column(Integer, ForeignKey("indian_standards.id"))
-    normative_code_id = Column(Integer, ForeignKey("indian_standards.id"))
-    dependency_reason = Column(String) # e.g., "Method of Test for Pressure"
+    primary_code_id = Column(Integer, ForeignKey("indian_standards.id"), nullable=False)
+    normative_code_id = Column(Integer, ForeignKey("indian_standards.id"), nullable=False)
+    dependency_type = Column(String(80), nullable=False, default="normative_reference")
+    dependency_reason = Column(String(500), nullable=True)
 
-    primary_standard = relationship("IndianStandard", foreign_keys=[primary_code_id])
+    primary_standard = relationship(
+        "IndianStandard",
+        foreign_keys=[primary_code_id],
+        back_populates="normative_standards",
+    )
+    normative_standard = relationship(
+        "IndianStandard",
+        foreign_keys=[normative_code_id],
+    )
